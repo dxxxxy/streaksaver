@@ -12,12 +12,12 @@ const username = process.env.GITHUB_REPOSITORY_OWNER || "dxxxxy"
 const timezone = process.env.TIMEZONE || "America/Montreal"
 
 //open browser
-const browser = await puppeteer.launch({ env: { TZ: timezone } })
+const browser = await puppeteer.launch()
 
 //open a new page
 const page = await browser.newPage()
 
-//emulate timezone as github likes to use different dates for contributions based on login (tested on incognito mode)
+//emulate timezone to get correct contribution graph
 await page.emulateTimezone(timezone)
 
 //navigate to the user's github profile
