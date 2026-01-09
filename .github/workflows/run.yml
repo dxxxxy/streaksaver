@@ -1,0 +1,40 @@
+name: run
+on:
+  schedule:
+    # run every hour
+    - cron: "0 * * * *"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      exit_code: ${{ steps.check.outputs.exit_code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.12.0"
+
+      - id: check
+        continue-on-error: true
+        env:
+            TIMEZONE: America/Montreal
+        run: |
+          run: npm ci
+          npm start
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+  save:
+    needs: check
+    if: needs.check.outputs.exit_code == '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          git config --global user.name "Serhiy Fedurtsya"
+          git config --global user.email "owner@dreamys.studio"
+          echo "$(date)" >> streak.txt
+          git add streak.txt
+          git commit -m "chore[streaksaver]: save streak"
+          git push
