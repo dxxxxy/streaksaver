@@ -1,1 +1,1 @@
-github has a weird bug where a contribution coming from the creation of a repo is shown in UTC if not logged in
+github has a weird bug where a contribution coming from the creation of a repo is shown in UTC if not logged in. so the solution is to be a little bit less efficient, checking at utc 23:00.

@@ -1,8 +1,8 @@
 name: run
 on:
   schedule:
-    # run every hour
-    - cron: "0 * * * *"
+    # run every hour UTC
+    - cron: "0 23 * * *"
 
 jobs:
   check:
@@ -17,8 +17,6 @@ jobs:
 
       - id: check
         continue-on-error: true
-        env:
-            TIMEZONE: America/Montreal
         run: |
           npm ci
           npm start
