@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       exit_code: ${{ steps.check.outputs.exit_code }}
     steps:
@@ -26,7 +26,7 @@ jobs:
   save:
     needs: check
     if: needs.check.outputs.exit_code == '1'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
