@@ -4,6 +4,6 @@
         "start": "node index.js"
     },
     "dependencies": {
-        "puppeteer": "^24.34.0"
+        "puppeteer": "^24.35.0"
     }
 }
