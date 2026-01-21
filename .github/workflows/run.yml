@@ -20,7 +20,7 @@ jobs:
         env:
             TIMEZONE: America/Montreal
         run: |
-          run: npm ci
+          npm ci
           npm start
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
 
