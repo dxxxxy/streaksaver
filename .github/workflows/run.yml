@@ -20,8 +20,11 @@ jobs:
         continue-on-error: true
         run: |
           npm ci
-          npm start
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          if npm start; then
+            echo "exit_code=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "exit_code=1" >> "$GITHUB_OUTPUT"
+          fi
 
   save:
     needs: check
