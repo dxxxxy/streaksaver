@@ -1,1 +1,10 @@
-github has a weird bug where a contribution coming from the creation of a repo is shown in UTC if not logged in. so the solution is to be a little bit less efficient, checking at utc 23:00.
+# streaksaver
+A simple Github Actions script that ensures you keep your contribution streak.
+
+> Note:
+
+## Disclaimer
+This is for educational purposes only. I am not responsible for any damage caused by this tool.
+
+## License
+GPLv3 © dxxxxy

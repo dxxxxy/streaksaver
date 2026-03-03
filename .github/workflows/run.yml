@@ -30,7 +30,7 @@ jobs:
 
   save:
     needs: check
-    if: needs.check.outputs.ok == '1'
+    if: needs.check.outputs.ok == '0'
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
