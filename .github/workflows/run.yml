@@ -12,34 +12,43 @@ jobs:
   check:
     runs-on: ubuntu-22.04
     outputs:
-      exit_code: ${{ steps.check.outputs.exit_code }}
+      ok: ${{ steps.check.outputs.ok }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "24.12.0"
 
-      - id: check
+      - name: Check streak
+        id: check
         continue-on-error: true
         run: |
           npm ci
-          if npm start; then
-            echo "exit_code=0" >> "$GITHUB_OUTPUT"
-          else
-            echo "exit_code=1" >> "$GITHUB_OUTPUT"
-          fi
+          npm start
+
+          echo "ok=$([[ $? -eq 0 ]] && echo 1 || echo 0)" >> "$GITHUB_OUTPUT"
 
   save:
     needs: check
-    if: needs.check.outputs.exit_code == '1'
+    if: needs.check.outputs.ok == '1'
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          git config --global user.name "Serhiy Fedurtsya"
-          git config --global user.email "owner@dreamys.studio"
+      - name: Save streak
+        env:
+          REPO_OWNER: ${{ github.repository_owner }}
+        run: |
+          owner_json="$(curl -fsSL "https://api.github.com/users/${REPO_OWNER}")"
+          owner_id="$(printf '%s' "$owner_json" | jq -r '.id')"
+          author_name="$REPO_OWNER"
+          author_email="${owner_id}+${REPO_OWNER}@users.noreply.github.com"
+
+          git config user.name "$author_name"
+          git config user.email "$author_email"
+
           echo "$(date)" >> streak.txt
           git add streak.txt
+
           git commit -m "chore[streaksaver]: save streak"
           git push
