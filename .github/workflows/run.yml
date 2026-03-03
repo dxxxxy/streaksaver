@@ -51,8 +51,8 @@ jobs:
           author_name="$REPO_OWNER"
           author_email="${owner_id}+${REPO_OWNER}@users.noreply.github.com"
 
-          # git config user.name "$author_name"
-          # git config user.email "$author_email"
+          git config user.name "$author_name"
+          git config user.email "$author_email"
 
           echo "$(date)" >> streak.txt
           git add streak.txt
