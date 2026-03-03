@@ -1,8 +1,11 @@
+permissions:
+  contents: write
+
 name: run
 on:
   workflow_dispatch:
   schedule:
-    # run every hour UTC
+    # run an hour before midnight UTC
     - cron: "0 23 * * *"
 
 jobs:
