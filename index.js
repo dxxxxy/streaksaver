@@ -7,7 +7,7 @@ const panicRun = () => {
 }
 
 //get the github username of the person running this from environment variables (planted from action context)
-const username = process.env.GITHUB_REPOSITORY_OWNER || "dxxxxy"
+const username = process.env.REPO_OWNER || "dxxxxy"
 
 //open browser
 const browser = await puppeteer.launch()

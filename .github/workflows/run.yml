@@ -21,9 +21,12 @@ jobs:
 
       - name: Check streak
         id: check
+        env:
+          REPO_OWNER: ${{ github.repository_owner }}
         continue-on-error: true
         run: |
           npm ci
+          printenv
           npm start
 
           echo "ok=$?" >> "$GITHUB_OUTPUT"
