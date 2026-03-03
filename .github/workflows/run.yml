@@ -26,7 +26,7 @@ jobs:
           npm ci
           npm start
 
-          echo "ok=$([[ $? -eq 0 ]] && echo 0 || echo 1)" >> "$GITHUB_OUTPUT"
+          echo "ok=$?" >> "$GITHUB_OUTPUT"
 
   save:
     needs: check
@@ -40,12 +40,19 @@ jobs:
           REPO_OWNER: ${{ github.repository_owner }}
         run: |
           owner_json="$(curl -fsSL "https://api.github.com/users/${REPO_OWNER}")"
+
+          owner_type="$(printf '%s' "$owner_json" | jq -r '.type')"
+          if [ "$owner_type" != "User" ]; then
+            echo "An organization owns this repository. Unable to auto-attribute contributions to a user."
+            exit 1
+          fi
+
           owner_id="$(printf '%s' "$owner_json" | jq -r '.id')"
           author_name="$REPO_OWNER"
           author_email="${owner_id}+${REPO_OWNER}@users.noreply.github.com"
 
-          git config user.name "$author_name"
-          git config user.email "$author_email"
+          # git config user.name "$author_name"
+          # git config user.email "$author_email"
 
           echo "$(date)" >> streak.txt
           git add streak.txt
