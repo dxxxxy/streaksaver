@@ -6,6 +6,25 @@ const panicRun = () => {
     process.exit(1)
 }
 
+//get timezone from environment variables (planted from action context)
+const timezone = process.env.TIMEZONE || "America/Montreal"
+
+//get current date and time
+const now = new Date()
+
+//format current time
+const hour = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    hour: "2-digit",
+    hour12: false
+}).format(now)
+
+//do not run if it's not 11pm EST
+if (hour != "23") {
+    console.log("User still has time to contribute. Streak saver script should not run.")
+    process.exit(0)
+}
+
 //get the github username of the person running this from environment variables (planted from action context)
 const username = process.env.GITHUB_REPOSITORY_OWNER || "dxxxxy"
 
@@ -26,7 +45,7 @@ const date = new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-}).format(new Date())
+}).format(now)
 
 //find the td cell with data-date="xxxx-xx-xx" for current date
 const tdCell = await contributionDiv.$(`td[data-date="${date}"]`).catch(panicRun)

@@ -5,8 +5,8 @@ name: run
 on:
   workflow_dispatch:
   schedule:
-    # run an hour before midnight UTC
-    - cron: "0 23 * * *"
+    # run every hour
+    - cron: "0 * * * *"
 
 jobs:
   check:
@@ -21,6 +21,8 @@ jobs:
 
       - name: Check streak
         id: check
+        env:
+          TIMEZONE: "America/Montreal"
         continue-on-error: true
         run: |
           npm ci
@@ -30,7 +32,7 @@ jobs:
 
   save:
     needs: check
-    if: needs.check.outputs.ok == '0'
+    if: needs.check.outputs.ok == '1'
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
