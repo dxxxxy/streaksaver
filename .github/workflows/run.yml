@@ -23,12 +23,16 @@ jobs:
         id: check
         env:
           TIMEZONE: "America/Montreal"
-        continue-on-error: true
         run: |
           npm ci
-          npm start
 
-          echo "ok=$?" >> "$GITHUB_OUTPUT"
+          set +e
+          npm start
+          status=$?
+          set -e
+
+          echo "ok=$status" >> "$GITHUB_OUTPUT"
+          exit 0
 
   save:
     needs: check
