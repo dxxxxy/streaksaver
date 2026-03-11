@@ -5,8 +5,8 @@ name: run
 on:
   workflow_dispatch:
   schedule:
-    # run every hour
-    - cron: "0 * * * *"
+    # run every hour + 30 minutes to avoid start of hour high load skipping workflow
+    - cron: "30 * * * *"
 
 jobs:
   check:
